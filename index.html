@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='none' viewBox='0 0 320 320'%3E%3Cpath fill='%23000' d='M247.258 18.749A63.908 63.908 0 0 0 202.029 0h-84.091a63.906 63.906 0 0 0-45.229 18.749L18.748 72.596C6.749 84.596 0 100.961 0 117.944v84.095c0 16.866 6.75 33.232 18.748 45.231l53.978 53.981A63.907 63.907 0 0 0 117.954 320h84.092a63.908 63.908 0 0 0 45.228-18.749l53.978-53.981A63.91 63.91 0 0 0 320 202.039v-84.095a63.913 63.913 0 0 0-18.748-45.231l-53.978-53.98-.016.016Zm3.749 45.964c2 0 3.117.25 3.866.367.867 3.366 1 16-10.865 39.865-5.5 11.116-12.749 22.732-21.248 34.481a410.027 410.027 0 0 0-20.364-21.865c-7.25-7.25-14.499-14-21.865-20.366 7.616-5.5 15.249-10.5 22.731-14.866 27.231-15.866 42.479-17.499 47.729-17.499v-.117h.016Zm-44.362 95.212c-6.999 8.25-14.498 16.366-22.364 24.365-7.999 8-16.115 15.5-24.364 22.366-8.249-7-16.365-14.366-24.364-22.366-8-7.999-15.499-16.115-22.365-24.365 6.999-8.25 14.499-16.366 22.365-24.365 7.865-8 16.115-15.5 24.364-22.366 8.249 7 16.365 14.366 24.364 22.366 7.999 7.999 15.498 16.115 22.364 24.365ZM90.707 36.865c7.25-7.25 16.865-11.25 27.114-11.25h84.091c10.249 0 19.865 4 27.114 11.25l4.616 4.616c-20.997 5.117-46.978 18.866-73.842 39.115-26.864-20.25-52.844-33.865-73.842-39.115l4.616-4.616h.133ZM65.093 65.097c.617-.117 1.867-.367 3.867-.367 15.865 0 38.612 12.25 47.728 17.5 7.499 4.365 15.115 9.365 22.731 14.865-7.366 6.366-14.615 13.116-21.865 20.366a410.071 410.071 0 0 0-20.364 21.865c-8.5-11.749-15.748-23.365-21.248-34.481C64.077 80.979 64.193 68.363 65.077 64.98v.117h.016Zm-28.23 164.058c-7.25-7.25-11.249-16.866-11.249-27.116v-84.095c0-10.25 4-19.866 11.249-27.115l4.616-4.617c5.116 20.999 18.865 46.981 38.98 73.846-20.249 26.866-33.864 52.848-38.98 73.847l-4.616-4.617v-.133Zm31.98 25.982c-2 0-3.117-.25-3.866-.367-.867-3.366-1-15.999 10.865-39.865 5.5-11.116 12.749-22.732 21.248-34.481a410.071 410.071 0 0 0 20.364 21.865c7.25 7.25 14.499 14 21.865 20.366-7.616 5.5-15.249 10.5-22.731 14.866-27.23 15.866-42.48 17.499-47.728 17.499v.117h-.017Zm160.3 27.865c-7.249 7.25-16.865 11.249-27.114 11.249h-84.091c-10.249 0-19.865-3.999-27.114-11.249l-4.616-4.617c20.997-5.116 46.978-18.865 73.842-39.114 26.864 20.249 52.845 33.865 73.842 39.114l-4.616 4.617h-.133Zm25.614-28.232c-.617.117-1.867.367-3.866.367-15.865 0-38.613-12.25-47.729-17.499-7.499-4.367-15.115-9.367-22.731-14.866a410.464 410.464 0 0 0 21.865-20.366 410.027 410.027 0 0 0 20.364-21.865c8.499 11.749 15.748 23.365 21.248 34.481 11.865 23.866 11.749 36.482 10.865 39.865v-.117h-.016Zm39.479-52.864c0 10.25-4 19.866-11.249 27.115l-4.616 4.617c-5.116-20.999-18.865-46.981-38.979-73.846 20.248-26.866 33.863-52.848 38.979-73.847l4.616 4.617c7.249 7.25 11.249 16.866 11.249 27.115v84.229Z'/%3E%3C/svg%3E" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>O Paradoxo da IA | Academia Lendár[IA]</title>
+
+    <!-- Fonts: Lendaria Brand System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'white-pure': '#FFFFFF',
+              'white-soft': '#F8F8F8',
+              'gray-100': '#E8E8E8',
+              'gray-200': '#D8D8D8',
+              'gray-300': '#B8B8B8',
+              'gray-400': '#888888',
+              'gray-500': '#646464',
+              'gray-600': '#484848',
+              'gray-700': '#323232',
+              'black-soft': '#242424',
+              'black-deep': '#161616',
+              'black-pure': '#000000',
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              serif: ['Source Serif Pro', 'Georgia', 'serif'],
+            },
+          }
+        }
+      }
+    </script>
+
+    <style>
+      /* ════════════════════════════════════════════
+         DESIGN TOKENS (from Frontend Design Mastery)
+         ════════════════════════════════════════════ */
+      :root {
+        /* Spacing - 8px grid */
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --space-6: 1.5rem;
+        --space-8: 2rem;
+        --space-12: 3rem;
+        --space-16: 4rem;
+        --space-24: 6rem;
+        --space-32: 8rem;
+
+        /* Motion - Apple HIG easing */
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+        --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+        --duration-fast: 150ms;
+        --duration-normal: 250ms;
+        --duration-slow: 400ms;
+        --duration-slower: 600ms;
+
+        /* Shadows */
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+        --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+        --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+        --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.2);
+      }
+
+      /* ════════════════════════════════════════════
+         ENTRANCE ANIMATIONS (Orchestrated)
+         ════════════════════════════════════════════ */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes revealUp {
+        from {
+          clip-path: inset(100% 0 0 0);
+          transform: translateY(20px);
+        }
+        to {
+          clip-path: inset(0 0 0 0);
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      /* Stagger system */
+      .stagger > * {
+        opacity: 0;
+        animation: fadeUp 0.7s var(--ease-out) forwards;
+      }
+      .stagger > *:nth-child(1) { animation-delay: 0ms; }
+      .stagger > *:nth-child(2) { animation-delay: 100ms; }
+      .stagger > *:nth-child(3) { animation-delay: 200ms; }
+      .stagger > *:nth-child(4) { animation-delay: 300ms; }
+      .stagger > *:nth-child(5) { animation-delay: 400ms; }
+      .stagger > *:nth-child(6) { animation-delay: 500ms; }
+
+      /* Hero orchestration */
+      .hero-logo { animation: scaleIn 0.8s var(--ease-out) 0.1s both; }
+      .hero-badge { animation: fadeUp 0.6s var(--ease-out) 0.2s both; }
+      .hero-title { animation: revealUp 0.9s var(--ease-out) 0.3s both; }
+      .hero-subtitle { animation: fadeUp 0.7s var(--ease-out) 0.5s both; }
+      .hero-cta { animation: fadeUp 0.6s var(--ease-out) 0.7s both; }
+      .hero-scroll { animation: fadeUp 0.5s var(--ease-out) 0.9s both; }
+
+      /* ════════════════════════════════════════════
+         HOVER STATES (Surprise & Delight)
+         ════════════════════════════════════════════ */
+
+      /* Card lift with shadow bloom */
+      .card-lift {
+        transition:
+          transform var(--duration-slow) var(--ease-out),
+          box-shadow var(--duration-slow) var(--ease-out);
+      }
+      .card-lift:hover {
+        transform: translateY(-8px);
+        box-shadow:
+          0 20px 40px -15px rgba(0,0,0,0.15),
+          0 0 0 1px rgba(0,0,0,0.03);
+      }
+
+      /* Button fill animation */
+      .btn-fill {
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        transition: color var(--duration-normal) var(--ease-out);
+      }
+      .btn-fill::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: #000;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform var(--duration-slow) var(--ease-out);
+        z-index: -1;
+      }
+      .btn-fill:hover::before {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+      .btn-fill:hover {
+        color: #fff;
+      }
+
+      /* Dark button inverse */
+      .btn-fill-dark::before {
+        background: #fff;
+      }
+      .btn-fill-dark:hover {
+        color: #000;
+      }
+
+      /* Underline grow */
+      .link-underline {
+        position: relative;
+      }
+      .link-underline::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 2px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform var(--duration-normal) var(--ease-out);
+      }
+      .link-underline:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      /* ════════════════════════════════════════════
+         BACKGROUNDS & ATMOSPHERE
+         ════════════════════════════════════════════ */
+
+      /* Grid pattern */
+      .grid-bg {
+        background-image:
+          linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      /* Dark grid */
+      .grid-bg-dark {
+        background-image:
+          linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      /* Noise texture overlay */
+      .textured::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        opacity: 0.02;
+        pointer-events: none;
+        mix-blend-mode: overlay;
+      }
+
+      /* Dot pattern */
+      .dot-pattern {
+        background-image: radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+
+      /* ════════════════════════════════════════════
+         TYPOGRAPHY REFINEMENTS
+         ════════════════════════════════════════════ */
+
+      /* Display text - tight tracking */
+      .display-tight {
+        letter-spacing: -0.03em;
+        line-height: 0.95;
+      }
+
+      /* Hero title - dramatic clamp */
+      .hero-display {
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        letter-spacing: -0.04em;
+        line-height: 0.9;
+      }
+
+      /* ════════════════════════════════════════════
+         SIGNATURE ELEMENT - Floating Diamond
+         ════════════════════════════════════════════ */
+      .diamond-float {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .diamond-glow {
+        filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));
+      }
+
+      /* ════════════════════════════════════════════
+         SCROLLBAR & SELECTION
+         ════════════════════════════════════════════ */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #F8F8F8;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #D8D8D8;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #B8B8B8;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      ::selection {
+        background: #000;
+        color: #fff;
+      }
+
+      /* ════════════════════════════════════════════
+         ACCESSIBILITY - Reduced Motion
+         ════════════════════════════════════════════ */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      /* Focus states */
+      :focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 3px;
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body class="bg-white-pure text-black-soft antialiased font-sans">
+    <div id="root"></div>
+    <script type="module" src="/main.tsx"></script>
+  </body>
+</html>
