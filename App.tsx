@@ -13,8 +13,41 @@ import {
   DollarSign,
   Clock,
   ChevronDown,
-  Mail
+  Mail,
+  Phone,
+  User,
+  Loader2,
+  X
 } from 'lucide-react'
+
+// Importar dados do content.ts
+import {
+  evento,
+  hero,
+  problem,
+  statistics,
+  paradox,
+  framework,
+  proof,
+  qualificacao,
+  offer,
+  eventCTA,
+  tagsCRM,
+  LeadData
+} from './src/data/content'
+
+// Mapa de icones por nome
+const iconMap: Record<string, React.ElementType> = {
+  AlertTriangle,
+  Clock,
+  Users,
+  Target,
+  Zap,
+  CheckCircle,
+  DollarSign,
+  Brain,
+  TrendingUp
+}
 
 // Lendaria Diamond Logo SVG Component
 function DiamondLogo({ className = "w-12 h-12", fill = "#000000" }: { className?: string, fill?: string }) {
@@ -134,7 +167,7 @@ function StatCard({
   )
 }
 
-// Quote component - using Source Serif Pro per brand guidelines
+// Quote component
 function Quote({ text, author }: { text: string; author: string }) {
   const { ref, isInView } = useInView()
 
@@ -162,12 +195,14 @@ function FrameworkStep({
   number,
   title,
   description,
+  naImersao,
   icon: Icon,
   delay = 0
 }: {
   number: string
   title: string
   description: string
+  naImersao?: string
   icon: React.ElementType
   delay?: number
 }) {
@@ -189,16 +224,48 @@ function FrameworkStep({
           <span className="text-gray-400 text-sm font-medium">{number}</span>
           <h3 className="text-xl font-semibold text-black-deep">{title}</h3>
         </div>
-        <p className="text-gray-600 leading-relaxed">{description}</p>
+        <p className="text-gray-600 leading-relaxed mb-2">{description}</p>
+        {naImersao && (
+          <p className="text-sm text-gray-500 italic flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-black-pure" />
+            Na Imersao: {naImersao}
+          </p>
+        )}
       </div>
     </div>
   )
 }
 
+// Formatacao de WhatsApp
+function formatWhatsApp(value: string): string {
+  const digits = value.replace(/\D/g, '')
+  if (digits.length <= 2) return digits
+  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`
+  if (digits.length <= 11) return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`
+}
+
+// Form State Types
+type FormStatus = 'idle' | 'loading' | 'success' | 'error'
+
 // Main App
 function App() {
   const [currentSection, setCurrentSection] = useState(0)
-  const [email, setEmail] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [formStatus, setFormStatus] = useState<FormStatus>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
+
+  // Form data
+  const [formData, setFormData] = useState<LeadData>({
+    nome: '',
+    email: '',
+    whatsapp: '',
+    situacao: '',
+    experienciaIA: '',
+    maiorBarreira: '',
+    disponibilidade: ''
+  })
+
   const sections = ['hero', 'problema', 'estatisticas', 'paradoxo', 'framework', 'prova', 'oferta']
 
   useEffect(() => {
@@ -221,45 +288,86 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    if (name === 'whatsapp') {
+      setFormData(prev => ({ ...prev, [name]: formatWhatsApp(value) }))
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }))
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    alert(`Email capturado: ${email}\n\nEm producao, isso enviaria para seu CRM/Email Marketing.`)
+    setFormStatus('loading')
+    setErrorMessage('')
+
+    try {
+      if (!formData.email || !formData.nome || !formData.whatsapp) {
+        throw new Error('Por favor, preencha todos os campos obrigatorios.')
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      console.log('Lead capturado:', formData)
+      console.log('Tags a aplicar:', [
+        tagsCRM.isca,
+        tagsCRM.preencheuForm,
+        formData.situacao && qualificacao.situacao.options.find(o => o.value === formData.situacao)?.tag,
+        formData.experienciaIA && qualificacao.experienciaIA.options.find(o => o.value === formData.experienciaIA)?.tag,
+        formData.maiorBarreira && qualificacao.maiorBarreira.options.find(o => o.value === formData.maiorBarreira)?.tag,
+        formData.disponibilidade && qualificacao.disponibilidade.options.find(o => o.value === formData.disponibilidade)?.tag
+      ].filter(Boolean))
+
+      setFormStatus('success')
+
+      setTimeout(() => {
+        window.open(evento.url, '_blank')
+      }, 2000)
+
+    } catch (error) {
+      setFormStatus('error')
+      setErrorMessage(error instanceof Error ? error.message : 'Erro ao enviar. Tente novamente.')
+    }
+  }
+
+  const openQualificationModal = () => {
+    setShowModal(true)
+    setFormStatus('idle')
+    setErrorMessage('')
   }
 
   return (
     <div className="relative">
       <ProgressIndicator sections={sections} currentSection={currentSection} />
 
-      {/* HERO - Dark section with grid background */}
+      {/* HERO */}
       <Section id="hero" dark className="relative overflow-hidden grid-bg-dark textured">
         <div className="relative max-w-4xl mx-auto text-center">
-          {/* Logo with floating animation */}
           <div className="mb-12 hero-logo">
             <DiamondLogo className="w-20 h-20 mx-auto mb-6 diamond-float diamond-glow" fill="#FFFFFF" />
           </div>
 
           <span className="hero-badge inline-flex items-center gap-2 px-4 py-2 bg-white-pure/10 border border-white-pure/20 rounded-lg text-white-pure text-sm font-medium mb-8">
             <AlertTriangle className="w-4 h-4" />
-            ALERTA PARA EMPRESARIOS
+            {hero.badge}
           </span>
 
           <h1 className="hero-title hero-display font-bold mb-8">
-            <span className="text-white-pure block">O Paradoxo da IA:</span>
-            <span className="text-gray-400 block">Por que 90% dos empresarios</span>
-            <span className="text-white-pure block">estao usando errado</span>
+            <span className="text-white-pure block">{hero.headline.line1}</span>
+            <span className="text-gray-400 block">{hero.headline.line2}</span>
+            <span className="text-white-pure block">{hero.headline.line3}</span>
           </h1>
 
           <p className="hero-subtitle text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-            Enquanto voce tenta "aprender IA", seus concorrentes ja automatizaram
-            <span className="text-white-pure font-semibold"> 40% das operacoes</span> e
-            reduziram custos em milhoes.
+            {hero.subheadline}
           </p>
 
           <a
-            href="#oferta"
+            href={hero.ctaUrl}
             className="hero-cta inline-flex items-center gap-3 px-8 py-4 bg-white-pure text-black-pure font-semibold rounded-lg btn-fill btn-fill-dark group"
           >
-            Quero o Framework Gratuito
+            {hero.cta}
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
 
@@ -269,98 +377,59 @@ function App() {
         </div>
       </Section>
 
-      {/* PROBLEMA - Agitar a dor */}
+      {/* PROBLEMA */}
       <Section id="problema" className="bg-white-soft dot-pattern">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-gray-500 text-sm font-medium tracking-widest uppercase">O Problema</span>
             <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6 text-black-pure display-tight">
-              Voce esta ficando para tras.
-              <br />
-              <span className="text-gray-500">E nem percebe.</span>
+              {problem.title}
             </h2>
           </div>
 
           <div className="space-y-6 stagger">
-            <div className="flex items-start gap-4 p-6 bg-white-pure border border-gray-200 border-l-4 border-l-black-pure rounded-lg card-lift">
-              <AlertTriangle className="w-6 h-6 text-black-pure flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-black-deep">O Custo da Espera</h3>
-                <p className="text-gray-600">
-                  Cada dia que voce "estuda" IA sem aplicar, sua empresa perde em media
-                  <strong className="text-black-pure"> R$ 15.000</strong> em eficiencia operacional
-                  que seus concorrentes ja capturaram.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-6 bg-white-pure border border-gray-200 border-l-4 border-l-black-pure rounded-lg card-lift">
-              <Clock className="w-6 h-6 text-black-pure flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-black-deep">A Ilusao do "Depois"</h3>
-                <p className="text-gray-600">
-                  "Vou implementar quando tiver tempo" e a frase de empresas que
-                  <strong className="text-black-pure"> fecharam</strong>. A janela de oportunidade
-                  esta se fechando. Em 18 meses, sera tarde demais.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-6 bg-white-pure border border-gray-200 border-l-4 border-l-black-pure rounded-lg card-lift">
-              <Users className="w-6 h-6 text-black-pure flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-black-deep">Seus Funcionarios Sabem Mais que Voce</h3>
-                <p className="text-gray-600">
-                  37% dos funcionarios ja usam IA escondido do chefe. Eles estao produzindo mais,
-                  mas <strong className="text-black-pure">sem estrategia</strong>. Imagine o risco
-                  de dados sensiveis sendo jogados no ChatGPT sem governanca.
-                </p>
-              </div>
-            </div>
+            {problem.cards.map((card, idx) => {
+              const Icon = iconMap[card.icon] || AlertTriangle
+              return (
+                <div key={idx} className="flex items-start gap-4 p-6 bg-white-pure border border-gray-200 border-l-4 border-l-black-pure rounded-lg card-lift">
+                  <Icon className="w-6 h-6 text-black-pure flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2 text-black-deep">{card.title}</h3>
+                    <p className="text-gray-600">{card.description}</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </Section>
 
-      {/* BREATHER - Estatisticas */}
+      {/* ESTATISTICAS */}
       <Section id="estatisticas">
         <div className="max-w-5xl mx-auto text-center">
-          <Quote
-            text="A IA nao vai substituir empresarios. Empresarios que usam IA vao substituir os que nao usam."
-            author="Jensen Huang, CEO da NVIDIA"
-          />
+          <Quote text={statistics.quote.text} author={statistics.quote.author} />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-            <StatCard
-              number="67%"
-              label="dos CEOs planejam aumentar investimento em IA em 2025"
-              trend="up"
-              delay={0}
-            />
-            <StatCard
-              number="R$ 2.3M"
-              label="economia media anual de empresas que implementaram IA corretamente"
-              trend="up"
-              delay={150}
-            />
-            <StatCard
-              number="14x"
-              label="mais produtivos sao times que usam IA vs times tradicionais"
-              trend="up"
-              delay={300}
-            />
+            {statistics.stats.map((stat, idx) => (
+              <StatCard
+                key={idx}
+                number={stat.number}
+                label={stat.label}
+                trend={stat.trend}
+                delay={idx * 150}
+              />
+            ))}
           </div>
         </div>
       </Section>
 
-      {/* PARADOXO - O insight */}
+      {/* PARADOXO */}
       <Section id="paradoxo" className="bg-white-soft">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-gray-500 text-sm font-medium tracking-widest uppercase">O Paradoxo</span>
             <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6 text-black-pure tracking-tight">
-              Quanto mais voce tenta "aprender IA",
-              <br />
-              <span className="text-gray-500">mais longe fica do resultado.</span>
+              {paradox.title}
             </h2>
           </div>
 
@@ -368,58 +437,30 @@ function App() {
             <div className="p-8 bg-white-pure border border-gray-200 rounded-lg">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 text-black-deep">
                 <TrendingDown className="w-5 h-5 text-gray-500" />
-                O que 90% fazem (ERRADO)
+                {paradox.wrong.title}
               </h3>
               <ul className="space-y-3 text-gray-600">
-                <li className="flex items-start gap-2">
-                  <span className="text-gray-400 mt-1">x</span>
-                  Fazer cursos genericos de "prompt engineering"
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-gray-400 mt-1">x</span>
-                  Brincar com ChatGPT sem proposito claro
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-gray-400 mt-1">x</span>
-                  Tentar automatizar TUDO de uma vez
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-gray-400 mt-1">x</span>
-                  Esperar a tecnologia "amadurecer"
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-gray-400 mt-1">x</span>
-                  Delegar 100% para o TI
-                </li>
+                {paradox.wrong.items.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-gray-400 mt-1">x</span>
+                    {item}
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div className="p-8 bg-black-pure text-white-pure rounded-lg">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
-                O que 10% fazem (CERTO)
+                {paradox.right.title}
               </h3>
               <ul className="space-y-3 text-gray-300">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-white-pure mt-1 flex-shrink-0" />
-                  Identificar 3 processos de ALTO IMPACTO primeiro
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-white-pure mt-1 flex-shrink-0" />
-                  Implementar em 72h, nao 72 dias
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-white-pure mt-1 flex-shrink-0" />
-                  Medir ROI desde o dia 1
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-white-pure mt-1 flex-shrink-0" />
-                  Treinar 1 pessoa-chave por area
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-white-pure mt-1 flex-shrink-0" />
-                  Criar politica de governanca desde o inicio
-                </li>
+                {paradox.right.items.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-white-pure mt-1 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -428,218 +469,276 @@ function App() {
             <div className="inline-flex items-center gap-2 px-6 py-3 bg-white-pure border border-gray-200 rounded-lg">
               <Lightbulb className="w-5 h-5 text-black-pure" />
               <span className="text-black-soft">
-                <strong>O segredo:</strong> Comece pelo problema, nao pela ferramenta.
+                <strong>O segredo:</strong> {paradox.insight.replace('O segredo: ', '')}
               </span>
             </div>
           </div>
         </div>
       </Section>
 
-      {/* FRAMEWORK - A solucao */}
+      {/* FRAMEWORK */}
       <Section id="framework">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-gray-500 text-sm font-medium tracking-widest uppercase">O Framework</span>
             <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6 text-black-pure tracking-tight">
-              O Metodo
-              <span className="text-gray-500"> P.I.V.O.</span>
+              {framework.title}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              4 etapas para implementar IA no seu negocio em 30 dias
-              (mesmo que voce nao entenda nada de tecnologia)
+              {framework.subtitle}
             </p>
           </div>
 
           <div className="space-y-8">
-            <FrameworkStep
-              number="01"
-              title="Problema Prioritario"
-              description="Identifique os 3 processos que mais consomem tempo da sua equipe. Esses sao seus Quick Wins - onde IA gera resultado imediato e mensuravel."
-              icon={Target}
-              delay={0}
-            />
-            <FrameworkStep
-              number="02"
-              title="Implementacao Rapida"
-              description="72 horas para primeiro resultado. Nada de projetos de 6 meses. Use ferramentas prontas (nao reinvente a roda). Comece pequeno, escale rapido."
-              icon={Zap}
-              delay={150}
-            />
-            <FrameworkStep
-              number="03"
-              title="Validacao Continua"
-              description="Meca tudo desde o dia 1: tempo economizado, erros reduzidos, satisfacao do time. Se nao da pra medir, nao faca."
-              icon={CheckCircle}
-              delay={300}
-            />
-            <FrameworkStep
-              number="04"
-              title="Operacionalizacao"
-              description="Documente, treine, padronize. Crie uma 'pessoa-chave de IA' em cada area. Estabeleca governanca: o que pode e o que nao pode ir pro ChatGPT."
-              icon={Users}
-              delay={450}
-            />
+            {framework.steps.map((step, idx) => {
+              const Icon = iconMap[step.icon] || Target
+              return (
+                <FrameworkStep
+                  key={idx}
+                  number={step.number}
+                  title={step.title}
+                  description={step.description}
+                  naImersao={step.naImersao}
+                  icon={Icon}
+                  delay={idx * 150}
+                />
+              )
+            })}
           </div>
         </div>
       </Section>
 
-      {/* PROVA - Cases rapidos */}
+      {/* PROVA */}
       <Section id="prova" className="bg-white-soft grid-bg">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-gray-500 text-sm font-medium tracking-widest uppercase">Casos Reais</span>
             <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6 text-black-pure display-tight">
-              Empresarios que aplicaram
-              <br />
-              <span className="text-gray-500">nos ultimos 90 dias</span>
+              {proof.title}
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 stagger">
-            <div className="bg-white-pure border border-gray-200 rounded-lg p-6 card-lift">
-              <div className="flex items-center gap-2 mb-4">
-                <DollarSign className="w-5 h-5 text-black-pure" />
-                <span className="text-gray-500 text-sm font-medium uppercase">Varejo</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-black-deep">
-                "Cortamos 40% do tempo em atendimento"
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Rede de lojas com 12 unidades implementou atendente IA no WhatsApp.
-                Resultado: 40% menos chamados para humanos, NPS subiu 18 pontos.
-              </p>
-              <div className="pt-4 border-t border-gray-100">
-                <p className="text-gray-500 text-xs mb-1">Implementacao: 5 dias</p>
-                <p className="text-2xl font-bold text-black-pure display-tight">R$ 47k/mes economizados</p>
-              </div>
-            </div>
-
-            <div className="bg-white-pure border border-gray-200 rounded-lg p-6 card-lift">
-              <div className="flex items-center gap-2 mb-4">
-                <Brain className="w-5 h-5 text-black-pure" />
-                <span className="text-gray-500 text-sm font-medium uppercase">Servicos</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-black-deep">
-                "Propostas que levavam 4h agora saem em 20min"
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Consultoria de RH automatizou geracao de propostas comerciais.
-                Time comercial triplicou capacidade de atendimento.
-              </p>
-              <div className="pt-4 border-t border-gray-100">
-                <p className="text-gray-500 text-xs mb-1">Implementacao: 3 dias</p>
-                <p className="text-2xl font-bold text-black-pure display-tight">3x mais propostas/mes</p>
-              </div>
-            </div>
-
-            <div className="bg-white-pure border border-gray-200 rounded-lg p-6 card-lift">
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="w-5 h-5 text-black-pure" />
-                <span className="text-gray-500 text-sm font-medium uppercase">Industria</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-black-deep">
-                "IA pega erros que humanos nao veem"
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Fabrica de pecas implementou analise de qualidade por visao computacional.
-                Reducao de 87% em pecas defeituosas que chegavam ao cliente.
-              </p>
-              <div className="pt-4 border-t border-gray-100">
-                <p className="text-gray-500 text-xs mb-1">Implementacao: 14 dias</p>
-                <p className="text-2xl font-bold text-black-pure display-tight">87% menos defeitos</p>
-              </div>
-            </div>
+            {proof.cases.map((caseItem, idx) => {
+              const Icon = iconMap[caseItem.icon] || DollarSign
+              return (
+                <div key={idx} className="bg-white-pure border border-gray-200 rounded-lg p-6 card-lift">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Icon className="w-5 h-5 text-black-pure" />
+                    <span className="text-gray-500 text-sm font-medium uppercase">{caseItem.sector}</span>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3 text-black-deep">
+                    "{caseItem.title}"
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    {caseItem.description}
+                  </p>
+                  <div className="pt-4 border-t border-gray-100">
+                    <p className="text-gray-500 text-xs mb-1">Implementacao: {caseItem.implementation}</p>
+                    <p className="text-2xl font-bold text-black-pure display-tight">{caseItem.result}</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </Section>
 
-      {/* OFERTA - CTA Final (Dark) */}
+      {/* OFERTA */}
       <Section id="oferta" dark className="relative overflow-hidden grid-bg-dark textured">
         <div className="relative max-w-3xl mx-auto text-center">
           <div className="mb-8">
             <DiamondLogo className="w-24 h-24 mx-auto mb-6 diamond-float diamond-glow" fill="#FFFFFF" />
-            <span className="text-gray-400 text-sm font-medium tracking-widest uppercase">Gratuito por tempo limitado</span>
+            <span className="text-gray-400 text-sm font-medium tracking-widest uppercase">
+              {offer.badge}
+            </span>
           </div>
 
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white-pure display-tight">
-            Receba o Framework P.I.V.O. Completo
-            <br />
-            <span className="text-gray-400">+ Checklist de Implementacao</span>
+            {offer.title}
           </h2>
 
           <p className="text-xl text-gray-400 mb-8 max-w-xl mx-auto">
-            O mesmo framework que empresas estao usando para
-            <strong className="text-white-pure"> economizar milhoes</strong> com IA.
-            Enviamos direto no seu email em 2 minutos.
+            {offer.subtitle}
           </p>
 
           <div className="bg-black-deep border border-gray-700 rounded-lg p-8">
             <h3 className="text-xl font-semibold mb-6 text-white-pure">
-              O que voce recebe:
+              O que voce recebe na Imersao:
             </h3>
 
             <ul className="text-left space-y-3 mb-8 max-w-md mx-auto">
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-white-pure flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300">
-                  <strong className="text-white-pure">Framework P.I.V.O. Detalhado</strong> —
-                  Passo a passo de implementacao
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-white-pure flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300">
-                  <strong className="text-white-pure">Checklist de 47 Pontos</strong> —
-                  Para nao esquecer nada na implementacao
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-white-pure flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300">
-                  <strong className="text-white-pure">Template de ROI</strong> —
-                  Calcule quanto sua empresa pode economizar
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-white-pure flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300">
-                  <strong className="text-white-pure">Lista de 15 Ferramentas</strong> —
-                  As que realmente funcionam (testadas)
-                </span>
-              </li>
+              {offer.benefits.map((benefit, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-white-pure flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-300">{benefit.text}</span>
+                </li>
+              ))}
             </ul>
 
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <div className="flex-1 relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors group-focus-within:text-white-pure" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@email.com"
-                  required
-                  className="w-full pl-12 pr-4 py-4 bg-black-pure border border-gray-600 rounded-lg text-white-pure placeholder:text-gray-500 focus:outline-none focus:border-white-pure transition-all"
-                />
+            <div className="mb-8 p-4 bg-black-pure/50 rounded-lg">
+              <div className="flex items-center justify-center gap-4 mb-2">
+                <span className="text-gray-500 line-through text-lg">{offer.precoOriginal}</span>
+                <span className="text-white-pure text-3xl font-bold">{offer.preco}</span>
               </div>
-              <button
-                type="submit"
-                className="px-8 py-4 bg-white-pure text-black-pure font-semibold rounded-lg btn-fill btn-fill-dark whitespace-nowrap"
-              >
-                Quero Receber
-              </button>
-            </form>
+              <p className="text-gray-400 text-sm">{offer.garantia}</p>
+            </div>
 
-            <p className="text-gray-500 text-xs mt-4">
-              Zero spam. Cancele quando quiser. Seus dados estao seguros.
+            <button
+              onClick={openQualificationModal}
+              className="w-full max-w-md mx-auto block px-8 py-4 bg-white-pure text-black-pure font-semibold rounded-lg btn-fill btn-fill-dark text-lg"
+            >
+              {offer.buttonText}
+            </button>
+
+            <p className="text-gray-500 text-sm mt-4">
+              {offer.urgencia}
             </p>
           </div>
 
           <p className="text-gray-500 text-sm mt-12">
-            Mais de <span className="text-white-pure font-semibold">2.847 empresarios</span> ja
-            baixaram este material nos ultimos 30 dias.
+            {offer.socialProof}
           </p>
         </div>
       </Section>
+
+      {/* Modal de Qualificacao */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black-pure/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-white-pure rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto relative">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-black-pure transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <div className="p-8">
+              {formStatus === 'success' ? (
+                <div className="text-center py-4">
+                  <CheckCircle className="w-12 h-12 text-black-pure mx-auto mb-4" />
+                  <h3 className="text-xl font-bold mb-2">Framework enviado!</h3>
+                  <p className="text-gray-600 mb-6 text-sm">Confira seu email para baixar o Framework P.I.V.O.</p>
+                  
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-left">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">{eventCTA.badge}</p>
+                    <h4 className="text-lg font-bold mb-2">{eventCTA.title}</h4>
+                    <p className="text-sm text-gray-600 mb-4">{eventCTA.subtitle}</p>
+                    <a
+                      href={eventCTA.buttonUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full py-3 bg-black-pure text-white-pure font-semibold rounded-lg text-center hover:bg-gray-800 transition-colors"
+                    >
+                      {eventCTA.buttonText}
+                    </a>
+                    <p className="text-xs text-gray-500 text-center mt-3">{eventCTA.guarantee}</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <h3 className="text-2xl font-bold mb-2 text-black-pure">Garanta sua vaga</h3>
+                  <p className="text-gray-600 mb-6">Preencha seus dados para participar da {evento.nome}</p>
+
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Nome completo *</label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type="text" name="nome" value={formData.nome} onChange={handleInputChange} required placeholder="Seu nome" className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-pure transition-colors" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="seu@email.com" className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-pure transition-colors" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp *</label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input type="tel" name="whatsapp" value={formData.whatsapp} onChange={handleInputChange} required placeholder="(11) 99999-9999" className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-pure transition-colors" />
+                      </div>
+                    </div>
+
+                    <div className="border-t border-gray-200 pt-4 mt-4">
+                      <p className="text-sm text-gray-500 mb-4">Ajude-nos a preparar uma experiencia personalizada:</p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{qualificacao.situacao.label}</label>
+                      <select name="situacao" value={formData.situacao} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-pure transition-colors bg-white">
+                        <option value="">Selecione...</option>
+                        {qualificacao.situacao.options.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{qualificacao.experienciaIA.label}</label>
+                      <select name="experienciaIA" value={formData.experienciaIA} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-pure transition-colors bg-white">
+                        <option value="">Selecione...</option>
+                        {qualificacao.experienciaIA.options.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{qualificacao.maiorBarreira.label}</label>
+                      <select name="maiorBarreira" value={formData.maiorBarreira} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-pure transition-colors bg-white">
+                        <option value="">Selecione...</option>
+                        {qualificacao.maiorBarreira.options.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{qualificacao.disponibilidade.label}</label>
+                      <select name="disponibilidade" value={formData.disponibilidade} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-black-pure transition-colors bg-white">
+                        <option value="">Selecione...</option>
+                        {qualificacao.disponibilidade.options.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {formStatus === 'error' && (
+                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                        {errorMessage}
+                      </div>
+                    )}
+
+                    <button type="submit" disabled={formStatus === 'loading'} className="w-full py-4 bg-black-pure text-white-pure font-semibold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                      {formStatus === 'loading' ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Processando...
+                        </>
+                      ) : (
+                        <>
+                          QUERO PARTICIPAR
+                          <ArrowRight className="w-5 h-5" />
+                        </>
+                      )}
+                    </button>
+
+                    <p className="text-xs text-gray-500 text-center">
+                      {offer.garantia} · Seus dados estao seguros.
+                    </p>
+                  </form>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-gray-100 bg-white-pure">
