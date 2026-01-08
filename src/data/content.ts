@@ -178,6 +178,33 @@ export const framework = {
 export const proof = {
   title: 'O que empresarios estao descobrindo',
   subtitle: 'Baseado em nossa pesquisa com 98 empresarios',
+  // cases para o App.tsx
+  cases: [
+    {
+      sector: 'Atendimento',
+      icon: 'Users',
+      title: 'Respostas automaticas reduziram chamados',
+      description: 'Automacao de respostas frequentes pode reduzir significativamente o volume de chamados.',
+      implementation: 'Chatbot WhatsApp',
+      result: '-60% chamados'
+    },
+    {
+      sector: 'Comercial',
+      icon: 'DollarSign',
+      title: 'Propostas geradas em minutos',
+      description: 'Geracao assistida por IA acelera a criacao de propostas personalizadas.',
+      implementation: 'Template + IA',
+      result: '5x mais rapido'
+    },
+    {
+      sector: 'Dados',
+      icon: 'Brain',
+      title: 'Padroes identificados automaticamente',
+      description: 'IA identifica padroes em dados que humanos levariam horas para encontrar.',
+      implementation: 'Claude/ChatGPT',
+      result: '-80% tempo analise'
+    }
+  ],
   insights: [
     {
       insight: 'Maior barreira citada',
@@ -254,6 +281,15 @@ export const qualificacao = {
       { value: 'treinar-equipe', label: 'Treinar minha equipe', tag: '[INTERESSE][TREINAR]' },
       { value: 'estrategia', label: 'Criar estrategia de IA', tag: '[INTERESSE][ESTRATEGIA]' }
     ]
+  },
+  disponibilidade: {
+    label: 'Sua disponibilidade para implementar:',
+    options: [
+      { value: 'imediata', label: 'Imediata - quero comecar agora', tag: '[DISPONIBILIDADE][IMEDIATA]' },
+      { value: 'proximos-30-dias', label: 'Proximos 30 dias', tag: '[DISPONIBILIDADE][30-DIAS]' },
+      { value: 'analisando', label: 'Ainda estou analisando', tag: '[DISPONIBILIDADE][ANALISANDO]' },
+      { value: 'apenas-curioso', label: 'Apenas curioso por agora', tag: '[DISPONIBILIDADE][CURIOSO]' }
+    ]
   }
 }
 
@@ -329,6 +365,7 @@ export interface LeadData {
   experienciaIA?: string
   maiorBarreira?: string
   interesse?: string
+  disponibilidade?: string
 }
 
 export interface QualificacaoOption {
