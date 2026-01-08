@@ -293,60 +293,198 @@ export const qualificacao = {
   }
 }
 
-// ENTREGA - O que o lead RECEBE ao se cadastrar
+// ============================================================================
+// ENTREGA ABUNDANTE - O que o lead RECEBE (efeito WOW)
+// Filosofia: Entregar tanto que ele pense "isso deveria ser pago"
+// ============================================================================
 export const entrega = {
-  badge: 'FRAMEWORK P.I.V.O. COMPLETO',
-  title: 'Receba o Framework que os 10% usam',
-  subtitle: 'Cadastre-se e receba imediatamente:',
+  badge: 'KIT COMPLETO DE IMPLEMENTACAO',
+  title: 'Receba o Kit que os 10% usam para implementar IA',
+  subtitle: 'Tudo que voce precisa para sair do "vou fazer" para o "esta funcionando":',
 
-  items: [
-    { icon: 'FileText', text: 'Framework P.I.V.O. em PDF - 4 etapas detalhadas com exemplos praticos' },
-    { icon: 'CheckSquare', text: 'Checklist de Implementacao - Para aplicar em 72 horas' },
-    { icon: 'Layout', text: 'Templates de Priorizacao - Identifique seus 3 processos de maior impacto' },
-    { icon: 'BarChart', text: 'Planilha de Metricas - Meca o ROI desde o dia 1' }
-  ],
+  // Kit Principal - O nucleo
+  kitPrincipal: {
+    titulo: 'Framework P.I.V.O.',
+    subtitulo: 'O metodo de 4 etapas usado por empresarios que implementam IA em 48h',
+    itens: [
+      { icon: 'Target', text: 'Etapa 1: Problema Prioritario - Como identificar os 3 processos de maior impacto' },
+      { icon: 'Zap', text: 'Etapa 2: Implementacao Rapida - A regra das 72 horas que elimina a procrastinacao' },
+      { icon: 'CheckCircle', text: 'Etapa 3: Validacao Continua - Como medir ROI desde o dia 1' },
+      { icon: 'Users', text: 'Etapa 4: Operacionalizacao - Como fazer sua equipe usar (sem depender de voce)' }
+    ]
+  },
 
-  buttonText: 'RECEBER FRAMEWORK COMPLETO',
-  
-  nota: 'Apos o cadastro, voce recebera o material completo por email em ate 5 minutos.'
+  // Bonus 1 - Ferramentas
+  ferramentas: {
+    titulo: 'Ferramentas Prontas para Usar',
+    itens: [
+      { icon: 'FileSpreadsheet', nome: 'Matriz de Priorizacao', desc: 'Planilha para mapear seus 10 processos e escolher os 3 certos' },
+      { icon: 'ListChecks', nome: 'Checklist 72 Horas', desc: 'Passo a passo para seu primeiro sistema funcionando em 3 dias' },
+      { icon: 'Calculator', nome: 'Calculadora de ROI', desc: 'Calcule exatamente quanto voce economiza com cada automacao' },
+      { icon: 'FileText', nome: 'Template de Documentacao', desc: 'Modelo para documentar processos e treinar sua equipe' }
+    ]
+  },
+
+  // Bonus 2 - Guia Pratico
+  guiaPratico: {
+    titulo: 'Guia: 5 Automacoes que Todo Empresario Deveria Ter',
+    itens: [
+      { nome: 'FAQ Inteligente', resultado: 'Economize 5-8h/semana em perguntas repetidas' },
+      { nome: 'Triagem de E-mails', resultado: 'Reduza 60% do tempo na caixa de entrada' },
+      { nome: 'Gerador de Propostas', resultado: 'Crie propostas em 5min em vez de 2h' },
+      { nome: 'Assistente de Reunioes', resultado: 'Elimine 50% das reunioes desnecessarias' },
+      { nome: 'Dashboard de Decisao', resultado: 'Pare de ser gargalo da sua equipe' }
+    ]
+  },
+
+  // Bonus 3 - Acesso Exclusivo
+  acessoExclusivo: {
+    titulo: 'Acesso Exclusivo',
+    itens: [
+      { icon: 'Video', nome: 'Video: Os 3 Erros Fatais', desc: 'Por que 90% falha e como evitar' },
+      { icon: 'MessageCircle', nome: 'Comunidade Privada', desc: 'Grupo de empresarios implementando IA' }
+    ]
+  },
+
+  valorTotal: {
+    itens: 'R$ 497 em materiais',
+    hoje: 'GRATIS'
+  },
+
+  buttonText: 'QUERO MEU KIT COMPLETO',
+
+  nota: 'Acesso imediato. Sem pegadinha. Sem cartao de credito.'
 }
 
 
-// OFFER - Entrega gratuita do Framework (ISCA)
+// ============================================================================
+// OFFER - Box de Captura (versao resumida do que entrega)
+// ============================================================================
 export const offer = {
-  badge: 'FRAMEWORK GRATUITO',
-  title: 'Receba o Framework P.I.V.O. Completo',
-  subtitle: 'O metodo que os 10% usam para implementar IA em 48 horas',
+  badge: 'ACESSO GRATUITO',
+  title: 'Kit Completo de Implementacao de IA',
+  subtitle: 'Tudo que voce precisa para implementar IA no seu negocio em 48 horas',
+
+  // Itens principais com valor percebido
   benefits: [
-    { text: 'Framework P.I.V.O. em PDF detalhado' },
-    { text: 'Checklist de implementacao em 72h' },
-    { text: 'Templates de priorizacao de processos' },
-    { text: 'Planilha de metricas ROI' }
+    { icon: 'BookOpen', text: 'Framework P.I.V.O. Completo', valor: 'R$ 197' },
+    { icon: 'FileSpreadsheet', text: '4 Ferramentas Prontas (Planilhas + Checklists)', valor: 'R$ 97' },
+    { icon: 'Lightbulb', text: 'Guia: 5 Automacoes Essenciais', valor: 'R$ 97' },
+    { icon: 'Video', text: 'Video Exclusivo + Comunidade', valor: 'R$ 106' }
   ],
-  precoOriginal: '',
+
+  valorTotal: 'R$ 497',
   preco: 'GRATIS',
-  garantia: '100% gratuito, sem compromisso',
-  buttonText: 'RECEBER FRAMEWORK GRATIS',
+  garantia: 'Sem cartao. Sem pegadinha. Acesso imediato.',
+  buttonText: 'QUERO MEU KIT GRATIS',
   buttonUrl: '#captura',
-  urgencia: 'Acesso imediato por email',
-  socialProof: 'Junte-se a 2.847 empresarios que ja baixaram'
+  urgencia: 'Acesso liberado por tempo limitado',
+  socialProof: '+2.847 empresarios ja baixaram'
 }
 
-// CTA EVENTO - Conexao com Imersao (apos entrega do framework)
+// ============================================================================
+// CTA EVENTO - Oferta da Imersao (APOS entregar valor)
+// Narrativa: "Voce tem o mapa. Quer um guia experiente?"
+// ============================================================================
 export const eventCTA = {
-  badge: '24 E 25 DE JANEIRO | 100% ONLINE',
-  title: 'Quer implementar o Framework P.I.V.O. em 48 horas?',
-  subtitle: 'Na Imersao Pratica de IA para Negocios, nosso time de especialistas implementa COM voce. Nao e curso. E implementacao real.',
-  benefits: [
-    'Time tecnico implementando ao seu lado em tempo real',
-    'Seu primeiro sistema de IA funcionando em 48 horas',
-    'Especialistas resolvendo suas duvidas na hora',
-    'Garantia: funciona ou devolvemos seu dinheiro'
-  ],
-  buttonText: 'QUERO IMPLEMENTAR EM 48H',
+  // Contexto - Reconhece o que ele ja tem
+  contexto: {
+    preTitle: 'Voce agora tem o Kit completo.',
+    title: 'E se voce pudesse implementar TUDO isso em 48 horas?',
+    subtitle: 'Com especialistas ao seu lado, tirando cada duvida, corrigindo cada erro, garantindo que funcione.',
+  },
+
+  // Ponte Narrativa - Emocional
+  ponte: {
+    principal: 'Sozinho, voce pode levar semanas. Com o time certo, voce sai com sistema funcionando no domingo.',
+    prova: 'Na ultima turma, 94% dos participantes sairam com pelo menos 1 sistema em producao.'
+  },
+
+  // A Imersao
+  evento: {
+    badge: 'IMERSAO PRATICA DE IA PARA NEGOCIOS',
+    data: '24 e 25 de Janeiro de 2026',
+    formato: 'Online ao vivo | Sabado e Domingo | 09h-18h + PS Noturno',
+    promessa: 'Implemente IA na sua empresa em 48 horas - ou seu dinheiro de volta'
+  },
+
+  // O que ele recebe na Imersao (abundancia)
+  oqueinclui: {
+    titulo: 'O que voce tera nesses 2 dias:',
+    blocos: [
+      {
+        icone: 'Users',
+        titulo: 'Time de Especialistas',
+        desc: 'Nao e curso. E implementacao com especialistas resolvendo SUAS duvidas em tempo real.',
+        destaque: 'Como ter um departamento de IA por 48h'
+      },
+      {
+        icone: 'Wrench',
+        titulo: 'Seu Sistema Funcionando',
+        desc: 'Voce sai com pelo menos 1 sistema de IA pronto para usar na segunda-feira.',
+        destaque: 'Garantido ou dinheiro de volta'
+      },
+      {
+        icone: 'Moon',
+        titulo: 'PS Noturno por Especialidade',
+        desc: 'Salas separadas: IA Conversacional, IA para Criacao, IA para Dados. Escolha sua area.',
+        destaque: 'Suporte individualizado'
+      },
+      {
+        icone: 'Gift',
+        titulo: 'Framework P.I.V.O. Aplicado',
+        desc: 'Voce aplica cada etapa do Framework COM orientacao ao vivo.',
+        destaque: 'Teoria + Pratica juntas'
+      }
+    ]
+  },
+
+  // Stack de Entrega (ancoragem de valor)
+  stack: {
+    titulo: 'Tudo que esta incluso:',
+    itens: [
+      { item: '2 dias de Imersao ao vivo (16h de conteudo)', valor: 'R$ 2.000' },
+      { item: 'PS Noturno com especialistas (8h extras)', valor: 'R$ 800' },
+      { item: 'Seu sistema de IA implementado', valor: 'Inestimavel' },
+      { item: 'Gravacoes completas + materiais', valor: 'R$ 497' },
+      { item: 'Acesso a comunidade exclusiva', valor: 'R$ 297' },
+      { item: 'Certificado de Participacao', valor: 'R$ 97' },
+      { item: 'Garantia de Resultado', valor: 'Risco Zero' }
+    ],
+    valorTotal: '+R$ 3.691 em valor',
+  },
+
+  // Preco e CTA
+  preco: {
+    de: 'R$ 697',
+    por: 'R$ 348',
+    parcelas: '12x R$ 33,80',
+    economia: 'Voce economiza R$ 349',
+    badge: 'EARLY BIRD'
+  },
+
+  // CTAs
+  buttonText: 'QUERO IMPLEMENTAR EM 48 HORAS',
   buttonUrl: 'https://imersao.academialendaria.ai/',
-  urgency: 'Vagas Limitadas',
-  guarantee: 'Garantia de resultado ou dinheiro de volta'
+
+  // Urgencia real
+  urgencia: {
+    texto: 'Early Bird ate 14/Jan',
+    subTexto: 'Depois sobe para R$ 368 (Regular) e R$ 388 (Last Call)'
+  },
+
+  // Garantia forte
+  garantia: {
+    titulo: 'Garantia de Implementacao',
+    texto: 'Se voce participar dos 2 dias e NAO sair com pelo menos 1 sistema funcionando, devolvemos 100% do seu investimento. Sem perguntas.',
+    icone: 'Shield'
+  },
+
+  // Escassez real (se houver)
+  escassez: {
+    ativa: false, // Mudar para true se quiser ativar
+    texto: 'Limitado a 200 participantes para garantir atendimento individual'
+  }
 }
 
 // TAGS CRM - NOVA TAXONOMIA (08/Jan/2026)

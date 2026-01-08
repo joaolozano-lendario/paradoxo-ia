@@ -313,7 +313,7 @@ function App() {
       console.log('Lead capturado:', formData)
       console.log('Tags a aplicar:', [
         tagsCRM.isca,
-        tagsCRM.preencheuForm,
+        tagsCRM.formPreenchido,
         formData.situacao && qualificacao.situacao.options.find(o => o.value === formData.situacao)?.tag,
         formData.experienciaIA && qualificacao.experienciaIA.options.find(o => o.value === formData.experienciaIA)?.tag,
         formData.maiorBarreira && qualificacao.maiorBarreira.options.find(o => o.value === formData.maiorBarreira)?.tag,
@@ -445,43 +445,118 @@ function App() {
           </div>
         </section>
 
-        {/* CTA Final - Imersao */}
-        <section className="py-16 px-6 bg-black-pure text-white-pure">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-block px-4 py-2 bg-white-pure/10 border border-white-pure/20 rounded-lg text-sm font-medium mb-6">
-              {eventCTA.badge}
-            </span>
-            
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              {eventCTA.title}
-            </h2>
-            
-            <p className="text-xl text-gray-400 mb-8">
-              {eventCTA.subtitle}
-            </p>
+        {/* CTA Final - Imersao (APOS entrega de valor) - VERSAO ABUNDANTE */}
+        <section className="py-20 px-6 bg-black-pure text-white-pure">
+          <div className="max-w-5xl mx-auto">
 
-            <ul className="text-left max-w-md mx-auto space-y-3 mb-8">
-              {eventCTA.benefits.map((benefit, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-white-pure flex-shrink-0 mt-0.5" />
-                  {benefit}
-                </li>
-              ))}
-            </ul>
+            {/* Ponte Narrativa - Contexto */}
+            <div className="text-center mb-16">
+              <p className="text-gray-400 text-lg mb-3">{eventCTA.contexto.preTitle}</p>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white-pure leading-tight">
+                {eventCTA.contexto.title}
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-4">
+                {eventCTA.contexto.subtitle}
+              </p>
+              <div className="max-w-2xl mx-auto">
+                <p className="text-gray-500 mb-2">{eventCTA.ponte.principal}</p>
+                <p className="text-white-pure font-medium">{eventCTA.ponte.prova}</p>
+              </div>
+            </div>
 
-            <a
-              href={eventCTA.buttonUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white-pure text-black-pure font-semibold rounded-lg hover:bg-gray-100 transition-colors text-lg"
-            >
-              {eventCTA.buttonText}
-              <ArrowRight className="w-5 h-5" />
-            </a>
+            {/* Card Principal do Evento */}
+            <div className="bg-gradient-to-b from-gray-900 to-black-deep border border-gray-700 rounded-2xl overflow-hidden mb-12">
 
-            <p className="text-gray-500 text-sm mt-6">
-              {eventCTA.guarantee}
-            </p>
+              {/* Header do Evento */}
+              <div className="p-8 border-b border-gray-700 text-center">
+                <span className="inline-block px-4 py-2 bg-white-pure text-black-pure text-sm font-bold rounded-lg mb-4">
+                  {eventCTA.preco.badge}
+                </span>
+                <h3 className="text-2xl md:text-3xl font-bold text-white-pure mb-2">
+                  {eventCTA.evento.badge}
+                </h3>
+                <p className="text-gray-400">{eventCTA.evento.data}</p>
+                <p className="text-gray-500 text-sm mt-1">{eventCTA.evento.formato}</p>
+              </div>
+
+              {/* O que esta incluso - Grid */}
+              <div className="p-8 border-b border-gray-700">
+                <h4 className="text-lg font-semibold text-gray-400 uppercase tracking-wider mb-6 text-center">
+                  {eventCTA.oqueinclui.titulo}
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {eventCTA.oqueinclui.blocos.map((bloco, idx) => (
+                    <div key={idx} className="p-5 bg-black-pure/40 rounded-xl border border-gray-800">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-white-pure/10 flex items-center justify-center flex-shrink-0">
+                          <Users className="w-6 h-6 text-white-pure" />
+                        </div>
+                        <div>
+                          <h5 className="text-white-pure font-semibold mb-1">{bloco.titulo}</h5>
+                          <p className="text-gray-400 text-sm mb-2">{bloco.desc}</p>
+                          <span className="text-xs text-gray-500 italic">{bloco.destaque}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Stack de Valor */}
+              <div className="p-8 border-b border-gray-700">
+                <h4 className="text-lg font-semibold text-gray-400 uppercase tracking-wider mb-6 text-center">
+                  {eventCTA.stack.titulo}
+                </h4>
+                <div className="max-w-xl mx-auto space-y-3">
+                  {eventCTA.stack.itens.map((item, idx) => (
+                    <div key={idx} className="flex justify-between items-center py-2 border-b border-gray-800 last:border-0">
+                      <span className="text-gray-300">{item.item}</span>
+                      <span className="text-gray-500 text-sm">{item.valor}</span>
+                    </div>
+                  ))}
+                  <div className="flex justify-between items-center pt-4 border-t border-gray-600">
+                    <span className="text-white-pure font-bold">Valor Total</span>
+                    <span className="text-white-pure font-bold">{eventCTA.stack.valorTotal}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Preco e CTA */}
+              <div className="p-8 bg-black-pure/50">
+                <div className="text-center mb-6">
+                  <div className="flex items-center justify-center gap-4 mb-2">
+                    <span className="text-gray-500 line-through text-2xl">{eventCTA.preco.de}</span>
+                    <span className="text-5xl font-bold text-white-pure">{eventCTA.preco.por}</span>
+                  </div>
+                  <p className="text-gray-400">ou {eventCTA.preco.parcelas}</p>
+                  <p className="text-green-400 text-sm mt-1">{eventCTA.preco.economia}</p>
+                </div>
+
+                <a
+                  href={eventCTA.buttonUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full max-w-md mx-auto px-8 py-5 bg-white-pure text-black-pure font-bold rounded-xl hover:bg-gray-100 transition-all text-lg text-center shadow-2xl shadow-white-pure/10"
+                >
+                  {eventCTA.buttonText}
+                  <ArrowRight className="w-5 h-5 inline ml-2" />
+                </a>
+
+                <p className="text-gray-500 text-sm mt-4 text-center">
+                  {eventCTA.urgencia.texto} · {eventCTA.urgencia.subTexto}
+                </p>
+              </div>
+            </div>
+
+            {/* Garantia */}
+            <div className="max-w-2xl mx-auto text-center p-6 bg-white-pure/5 border border-white-pure/10 rounded-xl">
+              <div className="w-12 h-12 rounded-full bg-white-pure/10 flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-6 h-6 text-white-pure" />
+              </div>
+              <h4 className="text-white-pure font-semibold mb-2">{eventCTA.garantia.titulo}</h4>
+              <p className="text-gray-400 text-sm">{eventCTA.garantia.texto}</p>
+            </div>
+
           </div>
         </section>
 
@@ -705,59 +780,72 @@ function App() {
         </div>
       </Section>
 
-      {/* OFERTA */}
+      {/* OFERTA - Box de Captura com Abundancia */}
       <Section id="oferta" dark className="relative overflow-hidden grid-bg-dark textured">
-        <div className="relative max-w-3xl mx-auto text-center">
-          <div className="mb-8">
-            <DiamondLogo className="w-24 h-24 mx-auto mb-6 diamond-float diamond-glow" fill="#FFFFFF" />
-            <span className="text-gray-400 text-sm font-medium tracking-widest uppercase">
+        <div className="relative max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <DiamondLogo className="w-20 h-20 mx-auto mb-6 diamond-float diamond-glow" fill="#FFFFFF" />
+            <span className="inline-block px-4 py-2 bg-white-pure/10 border border-white-pure/20 rounded-lg text-white-pure text-sm font-medium mb-6">
               {offer.badge}
             </span>
-          </div>
-
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white-pure display-tight">
-            {offer.title}
-          </h2>
-
-          <p className="text-xl text-gray-400 mb-8 max-w-xl mx-auto">
-            {offer.subtitle}
-          </p>
-
-          <div className="bg-black-deep border border-gray-700 rounded-lg p-8">
-            <h3 className="text-xl font-semibold mb-6 text-white-pure">
-              O que voce recebe na Imersao:
-            </h3>
-
-            <ul className="text-left space-y-3 mb-8 max-w-md mx-auto">
-              {offer.benefits.map((benefit, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-white-pure flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">{benefit.text}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mb-8 p-4 bg-black-pure/50 rounded-lg">
-              <div className="flex items-center justify-center gap-4 mb-2">
-                <span className="text-gray-500 line-through text-lg">{offer.precoOriginal}</span>
-                <span className="text-white-pure text-3xl font-bold">{offer.preco}</span>
-              </div>
-              <p className="text-gray-400 text-sm">{offer.garantia}</p>
-            </div>
-
-            <button
-              onClick={openQualificationModal}
-              className="w-full max-w-md mx-auto block px-8 py-4 bg-white-pure text-black-pure font-semibold rounded-lg btn-fill btn-fill-dark text-lg"
-            >
-              {offer.buttonText}
-            </button>
-
-            <p className="text-gray-500 text-sm mt-4">
-              {offer.urgencia}
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white-pure display-tight">
+              {offer.title}
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              {offer.subtitle}
             </p>
           </div>
 
-          <p className="text-gray-500 text-sm mt-12">
+          {/* Box Principal */}
+          <div className="bg-gradient-to-b from-gray-900 to-black-deep border border-gray-700 rounded-2xl overflow-hidden">
+            {/* Stack de Valor */}
+            <div className="p-8 border-b border-gray-700">
+              <h3 className="text-lg font-semibold mb-6 text-gray-400 uppercase tracking-wider text-center">
+                O que voce recebe agora:
+              </h3>
+
+              <div className="space-y-4">
+                {offer.benefits.map((benefit, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-4 bg-black-pure/30 rounded-lg border border-gray-800">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-white-pure/10 flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-white-pure" />
+                      </div>
+                      <span className="text-white-pure font-medium">{benefit.text}</span>
+                    </div>
+                    <span className="text-gray-500 line-through text-sm">{benefit.valor}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Preco e CTA */}
+            <div className="p-8 bg-black-pure/50">
+              <div className="text-center mb-6">
+                <div className="flex items-center justify-center gap-4 mb-2">
+                  <span className="text-gray-500 line-through text-2xl">{offer.valorTotal}</span>
+                  <span className="text-5xl font-bold text-white-pure">{offer.preco}</span>
+                </div>
+                <p className="text-gray-400">{offer.garantia}</p>
+              </div>
+
+              <button
+                onClick={openQualificationModal}
+                className="w-full max-w-md mx-auto block px-8 py-5 bg-white-pure text-black-pure font-bold rounded-xl hover:bg-gray-100 transition-all text-lg shadow-2xl shadow-white-pure/10"
+              >
+                {offer.buttonText}
+                <ArrowRight className="w-5 h-5 inline ml-2" />
+              </button>
+
+              <p className="text-gray-500 text-sm mt-4 text-center">
+                {offer.urgencia}
+              </p>
+            </div>
+          </div>
+
+          {/* Social Proof */}
+          <p className="text-gray-500 text-sm mt-8 text-center">
             {offer.socialProof}
           </p>
         </div>
@@ -777,29 +865,46 @@ function App() {
             <div className="p-8">
               {formStatus === 'success' ? (
                 <div className="text-center py-4">
-                  <CheckCircle className="w-12 h-12 text-black-pure mx-auto mb-4" />
-                  <h3 className="text-xl font-bold mb-2">Framework enviado!</h3>
-                  <p className="text-gray-600 mb-6 text-sm">Confira seu email para baixar o Framework P.I.V.O.</p>
-                  
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-left">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">{eventCTA.badge}</p>
-                    <h4 className="text-lg font-bold mb-2">{eventCTA.title}</h4>
-                    <p className="text-sm text-gray-600 mb-4">{eventCTA.subtitle}</p>
+                  <CheckCircle className="w-16 h-16 text-black-pure mx-auto mb-4" />
+                  <h3 className="text-2xl font-bold mb-2">Kit enviado com sucesso!</h3>
+                  <p className="text-gray-600 mb-2">Confira seu email para acessar:</p>
+
+                  {/* Lista do que foi enviado */}
+                  <div className="text-left bg-gray-50 rounded-lg p-4 mb-6">
+                    <ul className="space-y-2 text-sm">
+                      {offer.benefits.map((benefit, idx) => (
+                        <li key={idx} className="flex items-center gap-2 text-gray-700">
+                          <CheckCircle className="w-4 h-4 text-black-pure flex-shrink-0" />
+                          {benefit.text}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <p className="text-gray-500 text-xs mb-6">
+                    Nao recebeu? Verifique sua caixa de spam ou promocoes.
+                  </p>
+
+                  {/* Teaser da Imersao (soft) */}
+                  <div className="bg-black-pure text-white-pure rounded-xl p-6 text-left">
+                    <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">PROXIMO PASSO</p>
+                    <h4 className="text-lg font-bold mb-2">{eventCTA.contexto.title}</h4>
+                    <p className="text-sm text-gray-400 mb-4">{eventCTA.ponte.principal}</p>
                     <a
                       href={eventCTA.buttonUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full py-3 bg-black-pure text-white-pure font-semibold rounded-lg text-center hover:bg-gray-800 transition-colors"
+                      className="block w-full py-3 bg-white-pure text-black-pure font-semibold rounded-lg text-center hover:bg-gray-100 transition-colors"
                     >
-                      {eventCTA.buttonText}
+                      Conhecer a Imersao
+                      <ArrowRight className="w-4 h-4 inline ml-2" />
                     </a>
-                    <p className="text-xs text-gray-500 text-center mt-3">{eventCTA.guarantee}</p>
                   </div>
                 </div>
               ) : (
                 <>
-                  <h3 className="text-2xl font-bold mb-2 text-black-pure">Garanta sua vaga</h3>
-                  <p className="text-gray-600 mb-6">Preencha seus dados para participar da {evento.nome}</p>
+                  <h3 className="text-2xl font-bold mb-2 text-black-pure">Receba seu Kit Completo</h3>
+                  <p className="text-gray-600 mb-6">Framework P.I.V.O. + Ferramentas + Guia Pratico. Tudo no seu email em ate 5 minutos.</p>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -884,7 +989,7 @@ function App() {
                         </>
                       ) : (
                         <>
-                          QUERO PARTICIPAR
+                          RECEBER MEU FRAMEWORK
                           <ArrowRight className="w-5 h-5" />
                         </>
                       )}
