@@ -424,7 +424,7 @@ export const eventCTA = {
 
   // CTAs
   buttonText: 'QUERO IMPLEMENTAR EM 48 HORAS',
-  buttonUrl: 'https://imersao.academialendaria.ai/',
+  buttonUrl: 'https://imersao.academialendaria.ai/?utm_source=paradoxo&utm_medium=lp&utm_content=cta-evento&utm_campaign=imersao-jan26&src=paradoxo_lp',
 
   // Urgencia real
   urgencia: {
