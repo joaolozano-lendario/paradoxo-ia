@@ -396,15 +396,15 @@ export const eventCTA = {
 
   // Ponte Narrativa - Emocional
   ponte: {
-    principal: 'Sozinho, voce pode levar semanas. Com o time certo, voce sai com sistema funcionando no domingo.',
-    prova: 'Na ultima turma, 94% dos participantes sairam com pelo menos 1 sistema em producao.'
+    principal: 'Sozinho, voce pode levar semanas tentando. Com nosso time, voce sai no domingo com sistema funcionando.',
+    prova: 'Na ultima turma, 94% dos participantes sairam com pelo menos 1 automacao rodando.'
   },
 
   // A Imersao
   evento: {
     badge: 'IMERSAO PRATICA DE IA PARA NEGOCIOS',
     data: '24 e 25 de Janeiro de 2026',
-    formato: 'Online ao vivo | Sabado e Domingo | 09h-18h + PS Noturno',
+    formato: 'Online ao vivo | Sabado e Domingo | 09h-18h + Sessao de Implementacao com Especialistas',
     promessa: 'Implemente IA na sua empresa em 48 horas - ou seu dinheiro de volta'
   },
 
@@ -414,9 +414,9 @@ export const eventCTA = {
     blocos: [
       {
         icone: 'Users',
-        titulo: 'Time de Especialistas',
-        desc: 'Nao e curso. E implementacao com especialistas resolvendo SUAS duvidas em tempo real.',
-        destaque: 'Como ter um departamento de IA por 48h'
+        titulo: 'Time de Especialistas ao Vivo',
+        desc: 'Nao e curso gravado. E implementacao AO VIVO com especialistas resolvendo SUAS duvidas em tempo real.',
+        destaque: 'Como ter um time de IA por 48h'
       },
       {
         icone: 'Wrench',
@@ -426,9 +426,9 @@ export const eventCTA = {
       },
       {
         icone: 'Moon',
-        titulo: 'PS Noturno por Especialidade',
-        desc: 'Salas separadas: IA Conversacional, IA para Criacao, IA para Dados. Escolha sua area.',
-        destaque: 'Suporte individualizado'
+        titulo: 'Sessao de Implementacao por Especialidade',
+        desc: 'Salas separadas: IA Conversacional, IA para Criacao, IA para Dados. Escolha sua area e tire todas as duvidas.',
+        destaque: 'Atendimento individualizado'
       },
       {
         icone: 'Gift',
@@ -444,7 +444,7 @@ export const eventCTA = {
     titulo: 'Tudo que esta incluso:',
     itens: [
       { item: '2 dias de Imersao ao vivo (16h de conteudo)', valor: 'R$ 2.000' },
-      { item: 'PS Noturno com especialistas (8h extras)', valor: 'R$ 800' },
+      { item: 'Sessao de Implementacao com Especialistas (8h extras)', valor: 'R$ 800' },
       { item: 'Seu sistema de IA implementado', valor: 'Inestimavel' },
       { item: 'Gravacoes completas + materiais', valor: 'R$ 497' },
       { item: 'Acesso a comunidade exclusiva', valor: 'R$ 297' },
