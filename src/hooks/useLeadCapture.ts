@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AC_CONFIG } from '../config/activecampaign';
+import { AC_CONFIG, calcularScoreLead, getTemperaturaDescricao } from '../config/activecampaign';
 
 export interface LeadData {
   email: string;
@@ -8,7 +8,7 @@ export interface LeadData {
   situacao?: string;
   experienciaIA?: string;
   maiorBarreira?: string;
-  interesse?: string;
+  interesse?: string; // Nota: vem do campo 'disponibilidade' do form
 }
 
 interface UseLeadCaptureReturn {
@@ -29,8 +29,24 @@ export function useLeadCapture(): UseLeadCaptureReturn {
     setSuccess(false);
 
     try {
-      // Tags a aplicar
-      const tagIds = AC_CONFIG.getTagsToApply(false);
+      // =================================================================
+      // CALCULAR SCORE E TEMPERATURA DO LEAD
+      // =================================================================
+      const scoreResult = calcularScoreLead({
+        situacao: data.situacao,
+        experienciaIA: data.experienciaIA,
+        maiorBarreira: data.maiorBarreira,
+        disponibilidade: data.interesse // interesse vem do campo disponibilidade
+      });
+
+      console.log('[ParadoxoIA] Lead Score:', {
+        score: scoreResult.score,
+        temperatura: scoreResult.temperatura,
+        descricao: getTemperaturaDescricao(scoreResult.temperatura)
+      });
+
+      // Tags a aplicar (inclui tag de temperatura se ID > 0)
+      const tagIds = AC_CONFIG.getTagsToApply(false, scoreResult.tagId);
 
       // Extrair primeiro e ultimo nome
       const nameParts = (data.nome || '').trim().split(' ');
@@ -53,6 +69,9 @@ export function useLeadCapture(): UseLeadCaptureReturn {
           experienciaIA: data.experienciaIA,
           maiorBarreira: data.maiorBarreira,
           interesse: data.interesse,
+          // Dados do score para uso em automacoes
+          leadScore: scoreResult.score,
+          leadTemperatura: scoreResult.temperatura,
           dataCaptura: new Date().toISOString().split('T')[0]
         }
       };
@@ -86,14 +105,16 @@ export function useLeadCapture(): UseLeadCaptureReturn {
         });
       }
 
-      // GTM DataLayer - Lead Event
+      // GTM DataLayer - Lead Event (com score e temperatura)
       if (typeof window !== 'undefined' && (window as any).dataLayer) {
         (window as any).dataLayer.push({
           event: 'generate_lead',
           lead_source: 'paradoxo-ia',
           lead_situacao: data.situacao,
           lead_experiencia: data.experienciaIA,
-          lead_barreira: data.maiorBarreira
+          lead_barreira: data.maiorBarreira,
+          lead_score: scoreResult.score,
+          lead_temperatura: scoreResult.temperatura
         });
       }
 
