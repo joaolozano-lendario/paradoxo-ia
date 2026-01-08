@@ -32,9 +32,12 @@ import {
   qualificacao,
   offer,
   eventCTA,
-  tagsCRM,
+  entrega,
   LeadData
 } from './src/data/content'
+
+// Importar hook de captura para ActiveCampaign
+import { useLeadCapture } from './src/hooks/useLeadCapture'
 
 // Mapa de icones por nome
 const iconMap: Record<string, React.ElementType> = {
@@ -256,6 +259,9 @@ function App() {
   const [formStatus, setFormStatus] = useState<FormStatus>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
+  // Hook para enviar dados ao ActiveCampaign
+  const { sendLead, isLoading: isLeadLoading } = useLeadCapture()
+
   // Form data
   const [formData, setFormData] = useState<LeadData>({
     nome: '',
@@ -304,30 +310,30 @@ function App() {
     setErrorMessage('')
 
     try {
+      // Validação básica
       if (!formData.email || !formData.nome || !formData.whatsapp) {
         throw new Error('Por favor, preencha todos os campos obrigatorios.')
       }
 
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // Enviar para ActiveCampaign via hook
+      const success = await sendLead({
+        email: formData.email,
+        nome: formData.nome,
+        whatsapp: formData.whatsapp,
+        situacao: formData.situacao,
+        experienciaIA: formData.experienciaIA,
+        maiorBarreira: formData.maiorBarreira,
+        interesse: formData.disponibilidade // mapear disponibilidade para interesse
+      })
 
-      console.log('Lead capturado:', formData)
-      console.log('Tags a aplicar:', [
-        tagsCRM.isca,
-        tagsCRM.formPreenchido,
-        formData.situacao && qualificacao.situacao.options.find(o => o.value === formData.situacao)?.tag,
-        formData.experienciaIA && qualificacao.experienciaIA.options.find(o => o.value === formData.experienciaIA)?.tag,
-        formData.maiorBarreira && qualificacao.maiorBarreira.options.find(o => o.value === formData.maiorBarreira)?.tag,
-        formData.disponibilidade && qualificacao.disponibilidade.options.find(o => o.value === formData.disponibilidade)?.tag
-      ].filter(Boolean))
+      if (!success) {
+        throw new Error('Erro ao enviar dados. Tente novamente.')
+      }
 
-      setFormStatus('success')
-      
-      // Fecha o modal após 1.5s e mostra a página do Framework
-      setTimeout(() => {
-        setShowModal(false)
-        setShowFrameworkPage(true)
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }, 1500)
+      // Sucesso - ir DIRETO para página do Framework (sem popup)
+      setShowModal(false)
+      setShowFrameworkPage(true)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
 
     } catch (error) {
       setFormStatus('error')
@@ -863,50 +869,10 @@ function App() {
             </button>
 
             <div className="p-8">
-              {formStatus === 'success' ? (
-                <div className="text-center py-4">
-                  <CheckCircle className="w-16 h-16 text-black-pure mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Kit enviado com sucesso!</h3>
-                  <p className="text-gray-600 mb-2">Confira seu email para acessar:</p>
+              <h3 className="text-2xl font-bold mb-2 text-black-pure">Receba seu Kit Completo</h3>
+              <p className="text-gray-600 mb-6">Framework P.I.V.O. + Ferramentas + Guia Pratico. Tudo no seu email em ate 5 minutos.</p>
 
-                  {/* Lista do que foi enviado */}
-                  <div className="text-left bg-gray-50 rounded-lg p-4 mb-6">
-                    <ul className="space-y-2 text-sm">
-                      {offer.benefits.map((benefit, idx) => (
-                        <li key={idx} className="flex items-center gap-2 text-gray-700">
-                          <CheckCircle className="w-4 h-4 text-black-pure flex-shrink-0" />
-                          {benefit.text}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <p className="text-gray-500 text-xs mb-6">
-                    Nao recebeu? Verifique sua caixa de spam ou promocoes.
-                  </p>
-
-                  {/* Teaser da Imersao (soft) */}
-                  <div className="bg-black-pure text-white-pure rounded-xl p-6 text-left">
-                    <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">PROXIMO PASSO</p>
-                    <h4 className="text-lg font-bold mb-2">{eventCTA.contexto.title}</h4>
-                    <p className="text-sm text-gray-400 mb-4">{eventCTA.ponte.principal}</p>
-                    <a
-                      href={eventCTA.buttonUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full py-3 bg-white-pure text-black-pure font-semibold rounded-lg text-center hover:bg-gray-100 transition-colors"
-                    >
-                      Conhecer a Imersao
-                      <ArrowRight className="w-4 h-4 inline ml-2" />
-                    </a>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <h3 className="text-2xl font-bold mb-2 text-black-pure">Receba seu Kit Completo</h3>
-                  <p className="text-gray-600 mb-6">Framework P.I.V.O. + Ferramentas + Guia Pratico. Tudo no seu email em ate 5 minutos.</p>
-
-                  <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Nome completo *</label>
                       <div className="relative">
@@ -981,26 +947,24 @@ function App() {
                       </div>
                     )}
 
-                    <button type="submit" disabled={formStatus === 'loading'} className="w-full py-4 bg-black-pure text-white-pure font-semibold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                      {formStatus === 'loading' ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Processando...
-                        </>
-                      ) : (
-                        <>
-                          RECEBER MEU FRAMEWORK
-                          <ArrowRight className="w-5 h-5" />
-                        </>
-                      )}
-                    </button>
+                <button type="submit" disabled={formStatus === 'loading' || isLeadLoading} className="w-full py-4 bg-black-pure text-white-pure font-semibold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                  {(formStatus === 'loading' || isLeadLoading) ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      QUERO MEU KIT GRATIS
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
+                </button>
 
-                    <p className="text-xs text-gray-500 text-center">
-                      {offer.garantia} · Seus dados estao seguros.
-                    </p>
-                  </form>
-                </>
-              )}
+                <p className="text-xs text-gray-500 text-center">
+                  {offer.garantia} · Seus dados estao seguros.
+                </p>
+              </form>
             </div>
           </div>
         </div>
