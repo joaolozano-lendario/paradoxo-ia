@@ -813,27 +813,22 @@ function App() {
 
               <div className="space-y-4">
                 {offer.benefits.map((benefit, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-4 bg-black-pure/30 rounded-lg border border-gray-800">
+                  <div key={idx} className="flex items-center p-4 bg-black-pure/30 rounded-lg border border-gray-800">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-white-pure/10 flex items-center justify-center">
                         <CheckCircle className="w-5 h-5 text-white-pure" />
                       </div>
                       <span className="text-white-pure font-medium">{benefit.text}</span>
                     </div>
-                    <span className="text-gray-500 line-through text-sm">{benefit.valor}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Preco e CTA */}
+            {/* CTA */}
             <div className="p-8 bg-black-pure/50">
               <div className="text-center mb-6">
-                <div className="flex items-center justify-center gap-4 mb-2">
-                  <span className="text-gray-500 line-through text-2xl">{offer.valorTotal}</span>
-                  <span className="text-5xl font-bold text-white-pure">{offer.preco}</span>
-                </div>
-                <p className="text-gray-400">{offer.garantia}</p>
+                <span className="text-4xl font-bold text-white-pure">{offer.preco}</span>
               </div>
 
               <button
@@ -843,17 +838,8 @@ function App() {
                 {offer.buttonText}
                 <ArrowRight className="w-5 h-5 inline ml-2" />
               </button>
-
-              <p className="text-gray-500 text-sm mt-4 text-center">
-                {offer.urgencia}
-              </p>
             </div>
           </div>
-
-          {/* Social Proof */}
-          <p className="text-gray-500 text-sm mt-8 text-center">
-            {offer.socialProof}
-          </p>
         </div>
       </Section>
 
@@ -869,8 +855,8 @@ function App() {
             </button>
 
             <div className="p-8">
-              <h3 className="text-2xl font-bold mb-2 text-black-pure">Receba seu Kit Completo</h3>
-              <p className="text-gray-600 mb-6">Framework P.I.V.O. + Ferramentas + Guia Pratico. Tudo no seu email em ate 5 minutos.</p>
+              <h3 className="text-2xl font-bold mb-2 text-black-pure">Receba o Framework P.I.V.O.</h3>
+              <p className="text-gray-600 mb-6">O metodo de 4 etapas para implementar IA no seu negocio. Acesso imediato.</p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                     <div>

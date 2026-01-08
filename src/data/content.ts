@@ -294,18 +294,18 @@ export const qualificacao = {
 }
 
 // ============================================================================
-// ENTREGA ABUNDANTE - O que o lead RECEBE (efeito WOW)
-// Filosofia: Entregar tanto que ele pense "isso deveria ser pago"
+// ENTREGA - O que o lead REALMENTE recebe
+// Filosofia: Entregar o que prometemos. So isso.
 // ============================================================================
 export const entrega = {
-  badge: 'KIT COMPLETO DE IMPLEMENTACAO',
-  title: 'Receba o Kit que os 10% usam para implementar IA',
-  subtitle: 'Tudo que voce precisa para sair do "vou fazer" para o "esta funcionando":',
+  badge: 'FRAMEWORK EXCLUSIVO',
+  title: 'Receba o Framework P.I.V.O.',
+  subtitle: 'O metodo de 4 etapas que empresarios usam para implementar IA em 48 horas.',
 
-  // Kit Principal - O nucleo
+  // Framework P.I.V.O. - O que realmente entregamos
   kitPrincipal: {
     titulo: 'Framework P.I.V.O.',
-    subtitulo: 'O metodo de 4 etapas usado por empresarios que implementam IA em 48h',
+    subtitulo: 'Metodo pratico de implementacao de IA',
     itens: [
       { icon: 'Target', text: 'Etapa 1: Problema Prioritario - Como identificar os 3 processos de maior impacto' },
       { icon: 'Zap', text: 'Etapa 2: Implementacao Rapida - A regra das 72 horas que elimina a procrastinacao' },
@@ -314,72 +314,31 @@ export const entrega = {
     ]
   },
 
-  // Bonus 1 - Ferramentas
-  ferramentas: {
-    titulo: 'Ferramentas Prontas para Usar',
-    itens: [
-      { icon: 'FileSpreadsheet', nome: 'Matriz de Priorizacao', desc: 'Planilha para mapear seus 10 processos e escolher os 3 certos' },
-      { icon: 'ListChecks', nome: 'Checklist 72 Horas', desc: 'Passo a passo para seu primeiro sistema funcionando em 3 dias' },
-      { icon: 'Calculator', nome: 'Calculadora de ROI', desc: 'Calcule exatamente quanto voce economiza com cada automacao' },
-      { icon: 'FileText', nome: 'Template de Documentacao', desc: 'Modelo para documentar processos e treinar sua equipe' }
-    ]
-  },
+  buttonText: 'RECEBER FRAMEWORK P.I.V.O.',
 
-  // Bonus 2 - Guia Pratico
-  guiaPratico: {
-    titulo: 'Guia: 5 Automacoes que Todo Empresario Deveria Ter',
-    itens: [
-      { nome: 'FAQ Inteligente', resultado: 'Economize 5-8h/semana em perguntas repetidas' },
-      { nome: 'Triagem de E-mails', resultado: 'Reduza 60% do tempo na caixa de entrada' },
-      { nome: 'Gerador de Propostas', resultado: 'Crie propostas em 5min em vez de 2h' },
-      { nome: 'Assistente de Reunioes', resultado: 'Elimine 50% das reunioes desnecessarias' },
-      { nome: 'Dashboard de Decisao', resultado: 'Pare de ser gargalo da sua equipe' }
-    ]
-  },
-
-  // Bonus 3 - Acesso Exclusivo
-  acessoExclusivo: {
-    titulo: 'Acesso Exclusivo',
-    itens: [
-      { icon: 'Video', nome: 'Video: Os 3 Erros Fatais', desc: 'Por que 90% falha e como evitar' },
-      { icon: 'MessageCircle', nome: 'Comunidade Privada', desc: 'Grupo de empresarios implementando IA' }
-    ]
-  },
-
-  valorTotal: {
-    itens: 'R$ 497 em materiais',
-    hoje: 'GRATIS'
-  },
-
-  buttonText: 'QUERO MEU KIT COMPLETO',
-
-  nota: 'Acesso imediato. Sem pegadinha. Sem cartao de credito.'
+  nota: 'Acesso imediato apos preencher o formulario.'
 }
 
 
 // ============================================================================
-// OFFER - Box de Captura (versao resumida do que entrega)
+// OFFER - Box de Captura
 // ============================================================================
 export const offer = {
   badge: 'ACESSO GRATUITO',
-  title: 'Kit Completo de Implementacao de IA',
-  subtitle: 'Tudo que voce precisa para implementar IA no seu negocio em 48 horas',
+  title: 'Framework P.I.V.O.',
+  subtitle: 'O metodo de 4 etapas para implementar IA no seu negocio',
 
-  // Itens principais com valor percebido
+  // O que realmente entregamos
   benefits: [
-    { icon: 'BookOpen', text: 'Framework P.I.V.O. Completo', valor: 'R$ 197' },
-    { icon: 'FileSpreadsheet', text: '4 Ferramentas Prontas (Planilhas + Checklists)', valor: 'R$ 97' },
-    { icon: 'Lightbulb', text: 'Guia: 5 Automacoes Essenciais', valor: 'R$ 97' },
-    { icon: 'Video', text: 'Video Exclusivo + Comunidade', valor: 'R$ 106' }
+    { icon: 'Target', text: 'Etapa 1: Problema Prioritario - Identifique processos de alto impacto' },
+    { icon: 'Zap', text: 'Etapa 2: Implementacao Rapida - Regra das 72 horas' },
+    { icon: 'CheckCircle', text: 'Etapa 3: Validacao Continua - Meca ROI desde o dia 1' },
+    { icon: 'Users', text: 'Etapa 4: Operacionalizacao - Faca sua equipe usar' }
   ],
 
-  valorTotal: 'R$ 497',
   preco: 'GRATIS',
-  garantia: 'Sem cartao. Sem pegadinha. Acesso imediato.',
-  buttonText: 'QUERO MEU KIT GRATIS',
-  buttonUrl: '#captura',
-  urgencia: 'Acesso liberado por tempo limitado',
-  socialProof: '+2.847 empresarios ja baixaram'
+  buttonText: 'RECEBER FRAMEWORK',
+  buttonUrl: '#captura'
 }
 
 // ============================================================================
