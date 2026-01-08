@@ -252,6 +252,7 @@ type FormStatus = 'idle' | 'loading' | 'success' | 'error'
 function App() {
   const [currentSection, setCurrentSection] = useState(0)
   const [showModal, setShowModal] = useState(false)
+  const [showFrameworkPage, setShowFrameworkPage] = useState(false)
   const [formStatus, setFormStatus] = useState<FormStatus>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -320,10 +321,13 @@ function App() {
       ].filter(Boolean))
 
       setFormStatus('success')
-
+      
+      // Fecha o modal após 1.5s e mostra a página do Framework
       setTimeout(() => {
-        window.open(evento.url, '_blank')
-      }, 2000)
+        setShowModal(false)
+        setShowFrameworkPage(true)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 1500)
 
     } catch (error) {
       setFormStatus('error')
@@ -335,6 +339,163 @@ function App() {
     setShowModal(true)
     setFormStatus('idle')
     setErrorMessage('')
+  }
+
+  // Se showFrameworkPage, renderiza página de entrega do Framework
+  if (showFrameworkPage) {
+    return (
+      <div className="min-h-screen bg-white-pure">
+        {/* Header */}
+        <header className="bg-black-pure text-white-pure py-6 px-6">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <DiamondLogo className="w-10 h-10" fill="#FFFFFF" />
+            <span className="text-sm text-gray-400">Framework P.I.V.O. - Acesso Liberado</span>
+          </div>
+        </header>
+
+        {/* Mensagem de Boas-vindas */}
+        <section className="py-12 px-6 bg-white-soft border-b border-gray-200">
+          <div className="max-w-4xl mx-auto text-center">
+            <CheckCircle className="w-16 h-16 text-black-pure mx-auto mb-4" />
+            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-black-pure">
+              Parabens, {formData.nome.split(' ')[0]}!
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Seu acesso ao Framework P.I.V.O. foi liberado. Abaixo voce encontra o metodo completo com checklists e templates para implementar IA em 48 horas.
+            </p>
+          </div>
+        </section>
+
+        {/* Framework Completo */}
+        <section className="py-16 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="text-gray-500 text-sm font-medium tracking-widest uppercase">FRAMEWORK COMPLETO</span>
+              <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-4 text-black-pure">
+                {framework.title}
+              </h2>
+              <p className="text-xl text-gray-600">{framework.subtitle}</p>
+            </div>
+
+            <div className="space-y-12">
+              {framework.steps.map((step, idx) => {
+                const Icon = iconMap[step.icon] || Target
+                return (
+                  <div key={idx} className="bg-white-soft border border-gray-200 rounded-xl p-8">
+                    {/* Header do Step */}
+                    <div className="flex items-start gap-6 mb-6">
+                      <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-black-pure flex items-center justify-center">
+                        <Icon className="w-8 h-8 text-white-pure" />
+                      </div>
+                      <div>
+                        <span className="text-gray-400 text-sm font-medium">{step.number}</span>
+                        <h3 className="text-2xl font-bold text-black-pure">{step.title}</h3>
+                        <p className="text-gray-600 mt-2">{step.description}</p>
+                      </div>
+                    </div>
+
+                    {/* Como Aplicar */}
+                    {step.comoAplicar && (
+                      <div className="mt-6 pt-6 border-t border-gray-200">
+                        {/* Perguntas Cruciais */}
+                        <div className="mb-6">
+                          <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                            Perguntas Cruciais
+                          </h4>
+                          <ul className="space-y-2">
+                            {step.comoAplicar.perguntasCruciais.map((pergunta, pIdx) => (
+                              <li key={pIdx} className="flex items-start gap-3 text-gray-700">
+                                <span className="text-black-pure font-bold">{pIdx + 1}.</span>
+                                {pergunta}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Checklist */}
+                        <div className="mb-6">
+                          <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                            Checklist de Implementacao
+                          </h4>
+                          <ul className="space-y-2">
+                            {step.comoAplicar.checklist.map((item, cIdx) => (
+                              <li key={cIdx} className="flex items-start gap-3 text-gray-700">
+                                <CheckCircle className="w-5 h-5 text-black-pure flex-shrink-0 mt-0.5" />
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Template */}
+                        <div className="bg-black-pure text-white-pure p-4 rounded-lg">
+                          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                            Template
+                          </h4>
+                          <code className="text-sm text-gray-300 font-mono">
+                            {step.comoAplicar.template}
+                          </code>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Final - Imersao */}
+        <section className="py-16 px-6 bg-black-pure text-white-pure">
+          <div className="max-w-3xl mx-auto text-center">
+            <span className="inline-block px-4 py-2 bg-white-pure/10 border border-white-pure/20 rounded-lg text-sm font-medium mb-6">
+              {eventCTA.badge}
+            </span>
+            
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {eventCTA.title}
+            </h2>
+            
+            <p className="text-xl text-gray-400 mb-8">
+              {eventCTA.subtitle}
+            </p>
+
+            <ul className="text-left max-w-md mx-auto space-y-3 mb-8">
+              {eventCTA.benefits.map((benefit, idx) => (
+                <li key={idx} className="flex items-start gap-3 text-gray-300">
+                  <CheckCircle className="w-5 h-5 text-white-pure flex-shrink-0 mt-0.5" />
+                  {benefit}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href={eventCTA.buttonUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-white-pure text-black-pure font-semibold rounded-lg hover:bg-gray-100 transition-colors text-lg"
+            >
+              {eventCTA.buttonText}
+              <ArrowRight className="w-5 h-5" />
+            </a>
+
+            <p className="text-gray-500 text-sm mt-6">
+              {eventCTA.guarantee}
+            </p>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="py-8 px-6 border-t border-gray-100 bg-white-pure">
+          <div className="max-w-4xl mx-auto text-center">
+            <DiamondLogo className="w-8 h-8 mx-auto mb-4" fill="#000000" />
+            <p className="text-gray-500 text-sm">
+              Academia Lendaria - Eternizando legados atraves da IA
+            </p>
+          </div>
+        </footer>
+      </div>
+    )
   }
 
   return (
