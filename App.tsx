@@ -622,13 +622,13 @@ function App() {
             {hero.subheadline}
           </p>
 
-          <a
-            href={hero.ctaUrl}
+          <button
+            onClick={openQualificationModal}
             className="hero-cta inline-flex items-center gap-3 px-8 py-4 bg-white-pure text-black-pure font-semibold rounded-lg btn-fill btn-fill-dark group"
           >
             {hero.cta}
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </a>
+          </button>
 
           <div className="hero-scroll mt-16">
             <ChevronDown className="w-8 h-8 mx-auto text-gray-500 animate-bounce" />
