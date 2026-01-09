@@ -39,6 +39,9 @@ import {
 // Importar hook de captura para ActiveCampaign
 import { useLeadCapture } from './src/hooks/useLeadCapture'
 
+// Importar utilidade de persistência de lead
+import { getPersistedLead, saveLeadToStorage } from './src/utils/leadPersistence'
+
 // Mapa de icones por nome
 const iconMap: Record<string, React.ElementType> = {
   AlertTriangle,
@@ -275,6 +278,19 @@ function App() {
 
   const sections = ['hero', 'problema', 'estatisticas', 'paradoxo', 'framework', 'prova', 'oferta']
 
+  // Carrega dados persistidos ao montar (localStorage ou URL params)
+  useEffect(() => {
+    const persisted = getPersistedLead()
+    if (persisted) {
+      setFormData(prev => ({
+        ...prev,
+        nome: persisted.nome || prev.nome,
+        email: persisted.email || prev.email,
+        whatsapp: persisted.whatsapp || prev.whatsapp
+      }))
+    }
+  }, [])
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight / 2
@@ -329,6 +345,14 @@ function App() {
       if (!success) {
         throw new Error('Erro ao enviar dados. Tente novamente.')
       }
+
+      // Persiste dados do lead para cross-sell entre iscas
+      saveLeadToStorage({
+        nome: formData.nome,
+        email: formData.email,
+        whatsapp: formData.whatsapp,
+        lastIsca: 'paradoxo-ia'
+      })
 
       // Sucesso - ir DIRETO para página do Framework (sem popup)
       setShowModal(false)
